@@ -1,0 +1,66 @@
+* {
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: black;
+    border: none;
+}
+
+body {
+    background-image: url(background.jpg);
+    background-color: rgba(red, green, blue, );
+}
+
+textarea:focus, input:focus {
+    outline: none;
+}
+
+a {
+    font-size: .8rem;
+}
+
+a:hover {
+    color: green;
+}
+
+#logincontainer {
+    background-color: rgba(69, 134, 62, 0.596);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 30px;
+    margin-top: 10vh;
+    border-radius: 10px;
+    text-align: center;
+}
+
+form {
+    margin-top: 50px;
+    margin-bottom: 40px;
+}
+
+label, input {
+    display: block;
+    width: 70%;
+    text-align: left;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    border: 2px solid black;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+input:focus {
+    border-bottom: 2px solid black;
+}
+
+#forgotpass {
+    
+}
