@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Emails e Senhas</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    <h2>CRIE SUA CONTA</h2>
+    <form id="entryForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <br><br>
+        <label for="password">Senha:</label>
+        <input type="password" id="password" required>
+        <br><br>
+        <button type="button" onclick="saveEntry()">Salvar</button>
+        <p id="formError" style="color: red;"></p>
+    </form>
+    
+    <!-- <h2>Entradas Armazenadas</h2>
+    <ul id="entriesList"></ul>
+-->
+    <h2>Esqueceu sua senha?</h2>
+    <form id="resetForm">
+        <label for="resetEmail">Email:</label>
+        <input type="email" id="resetEmail" required>
+        <br><br>
+        <button type="button" onclick="resetPassword()">Redefinir Senha</button>
+    </form>
+    
+    <h2>ENTRE NA SUA CONTA</h2>
+    <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" required>
+        <br><br>
+        <label for="loginPassword">Senha:</label>
+        <input type="password" id="loginPassword" required>
+        <br><br>
+        <button type="button" onclick="login()">Entrar</button>
+        <p id="loginError" style="color: red;"></p>
+    </form>
+    
+    <script>
+        // Função para salvar uma entrada no localStorage
+        function saveEntry() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const formError = document.getElementById('formError');
+
+            if (!email || !password) {
+                formError.textContent = 'Por favor, preencha todos os campos.';
+                return;
+            }
+
+            // Verifica se o email já está cadastrado
+            if (localStorage.getItem(email)) {
+                formError.textContent = 'Email já cadastrado.';
+                return;
+            }
+
+            // Cria um objeto para armazenar a entrada
+            const entry = { email, password };
+
+            // Salva a entrada no localStorage
+            localStorage.setItem(email, JSON.stringify(entry));
+
+            // Limpa o formulário
+            document.getElementById('entryForm').reset();
+            formError.textContent = '';
+
+            // Atualiza a lista de entradas
+            updateEntriesList();
+        }
+
+        // Função para atualizar a lista de entradas
+        function updateEntriesList() {
+            const entriesList = document.getElementById('entriesList');
+            entriesList.innerHTML = '';
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const entry = JSON.parse(localStorage.getItem(key));
+
+                const listItem = document.createElement('li');
+                listItem.textContent = `Email: ${entry.email}`;
+                
+                // Botão para redefinir senha
+                const resetButton = document.createElement('button');
+                resetButton.textContent = 'Esqueceu a Senha';
+                resetButton.onclick = () => {
+                    document.getElementById('resetEmail').value = entry.email;
+                };
+
+                listItem.appendChild(resetButton);
+                entriesList.appendChild(listItem);
+            }
+        }
+
+        // Função para redefinir a senha de uma entrada
+        function resetPassword() {
+            const email = document.getElementById('resetEmail').value;
+            const newPassword = prompt('Digite a nova senha:');
+
+            if (!email || !newPassword) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Verifica se a entrada existe
+            if (!localStorage.getItem(email)) {
+                alert('Email não encontrado.');
+                return;
+            }
+
+            // Atualiza a senha
+            const entry = { email, password: newPassword };
+            localStorage.setItem(email, JSON.stringify(entry));
+
+            // Limpa o formulário
+            document.getElementById('resetForm').reset();
+
+            // Atualiza a lista de entradas
+            updateEntriesList();
+        }
+
+        // Função para login
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Verifica se as credenciais são válidas
+            const storedEntry = localStorage.getItem(email);
+            if (storedEntry) {
+                const entry = JSON.parse(storedEntry);
+                if (entry.password === password) {
+                    // Redireciona para uma nova página
+                    window.location.href = 'pagina_nova.html'; // Altere para o URL da página desejada
+                } else {
+                    showLoginError('Senha incorreta.');
+                }
+            } else {
+                showLoginError('Email não encontrado.');
+            }
+        }
+
+        // Função para mostrar mensagem de erro no login
+        function showLoginError(message) {
+            document.getElementById('loginError').textContent = message;
+        }
+
+        // Atualiza a lista de entradas ao carregar a página
+        window.onload = updateEntriesList;
+    </script>
+</body>
+</html>
